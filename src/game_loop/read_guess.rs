@@ -22,13 +22,13 @@ fn parse_input() -> ReadCase {
     }
 }
 
-pub fn run() -> u32 {
+pub fn read_guess() -> u32 {
     println!("Please input your guess");
 
     match parse_input() {
         ReadCase::Number(guess) => guess,
         ReadCase::NotANumber => {
-            run()
+            read_guess()
         }
     }
 }
