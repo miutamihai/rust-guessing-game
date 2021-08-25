@@ -8,11 +8,7 @@ use match_guess::match_guess;
 use match_guess::MatchCase;
 
 pub fn run_game(secret_number: &u32) {
-    let guess = read_guess();
-
-    println!("You guessed {}", guess);
-
-    match match_guess(guess, &secret_number) {
+    match match_guess(read_guess(), &secret_number) {
         MatchCase::Retry(Ordering::Greater) => {
             println!("Too big");
             run_game(secret_number);
