@@ -1,29 +1,12 @@
-use std::io;
-use rand::Rng;
+mod generate_number;
+mod read_guess;
+mod match_guess;
+
 use std::cmp::Ordering;
 
 enum MatchCase {
     Retry(Ordering),
     End
-}
-
-enum ReadCase {
-    Number(u32),
-    NotANumber
-}
-
-fn generate_number() -> u32 {
-    rand::thread_rng().gen_range(1..101)
-}
-
-fn read_guess() -> String {
-    let mut guess = String::new();
-
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed to read from terminal");
-
-    guess
 }
 
 fn match_guess(guess: u32, secret_number: &u32) -> MatchCase {
@@ -34,26 +17,19 @@ fn match_guess(guess: u32, secret_number: &u32) -> MatchCase {
     }
 }
 
-fn read_parsed_guess() -> ReadCase {
-    match read_guess().trim().parse() {
-        Ok(num) => ReadCase::Number(num),
-        Err(_) => ReadCase::NotANumber
-    }
-}
-
 fn main() {
     println!("Guess the number!");
 
-    let secret_number = generate_number();
+    let secret_number = generate_number::run();
 
     println!("The secret number is {}", secret_number);
 
     loop {
         println!("Please input your guess");
 
-        let guess = match read_parsed_guess() {
-            ReadCase::Number(number) => number,
-            ReadCase::NotANumber => continue
+        let guess = match read_guess::run() {
+            read_guess::ReadCase::Number(number) => number,
+            read_guess::ReadCase::NotANumber => continue
         };
 
         println!("You guessed {}", guess);
@@ -65,6 +41,6 @@ fn main() {
                 println!("You win");
                 break;
             }
-        }
+        }t 
     }
 }
