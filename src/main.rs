@@ -4,19 +4,6 @@ mod match_guess;
 
 use std::cmp::Ordering;
 
-enum MatchCase {
-    Retry(Ordering),
-    End
-}
-
-fn match_guess(guess: u32, secret_number: &u32) -> MatchCase {
-    match guess.cmp(&secret_number) {
-        Ordering::Less => MatchCase::Retry(Ordering::Less),
-        Ordering::Greater => MatchCase::Retry(Ordering::Greater),
-        Ordering::Equal => MatchCase::End
-    }
-}
-
 fn main() {
     println!("Guess the number!");
 
@@ -34,10 +21,10 @@ fn main() {
 
         println!("You guessed {}", guess);
 
-        match match_guess(guess, &secret_number) {
-            MatchCase::Retry(Ordering::Greater) => println!("Too big"),
-            MatchCase::Retry(Ordering::Less) => println!("Too small"),
-            MatchCase::End | MatchCase::Retry(Ordering::Equal) => {
+        match match_guess::run(guess, &secret_number) {
+            match_guess::MatchCase::Retry(Ordering::Greater) => println!("Too big"),
+            match_guess::MatchCase::Retry(Ordering::Less) => println!("Too small"),
+            match_guess::MatchCase::End | match_guess::MatchCase::Retry(Ordering::Equal) => {
                 println!("You win");
                 break;
             }
